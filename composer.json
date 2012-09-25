@@ -1,0 +1,16 @@
+{
+	"name": "silverstripe/shibboleth",
+	"description": "Wrapper for the SimpleSAML library, providing federated authentication.",
+	"type": "silverstripe-module",
+	"keywords": ["silverstripe", "shibboleth", "security"],
+	"authors": [
+		{
+			"name": "Ingo Schommer",
+			"email": "ingo@silverstripe.com"
+		}
+	],
+	"require":
+	{
+		"silverstripe/framework": "~2.4"
+	}
+}
