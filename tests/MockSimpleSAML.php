@@ -31,7 +31,7 @@ class MockSimpleSAML implements ShibbolethSP, TestOnly {
 	}
 
 	public function logout($url = null) {
-		Director::redirect($url);
+		Controller::currr()->redirect($url);
 		exit();
 	}
 

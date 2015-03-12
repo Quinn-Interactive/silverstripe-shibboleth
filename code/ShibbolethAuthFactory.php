@@ -2,7 +2,7 @@
 
 /**
  *	ShibbolethAuthenticator
- *	
+ *
  *	Singleton Factory class to construct the ShibbolethAuthenticator auth source
  *
  *	@package shibboleth

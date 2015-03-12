@@ -2,13 +2,13 @@
 
 /**
  *	ShibbolethAuthenticator
- *	
+ *
  *	@package shibboleth
  **/
 
 class ShibbolethAuthenticator extends Authenticator {
-	
-	
+
+
 	const EX_NOATTRIBUTES = 100;
 	const EX_NOTFOUND = 101;
 
@@ -55,16 +55,16 @@ class ShibbolethAuthenticator extends Authenticator {
 		$authSource = self::get_auth_object();
 		$authSource->requireAuth();
 		$attributes = $authSource->getAttributes();
-		
+
 		if (!is_array($attributes)) {
 			throw new ShibbolethAuthenticator_Exception("No attributes array returned", self::EX_NOATTRIBUTES);
 		}
 		if (!isset($attributes[self::$shib_unique_id]) || !is_array($attributes[self::$shib_unique_id])) {
 			throw new ShibbolethAuthenticator_Exception("No eduPersonTargetedID attribute found", self::EX_NOTFOUND);
 		}
-		
+
  		$uid = $attributes[self::$shib_unique_id][0];
-		$user = DataObject::get_one('Member', "\"Member\".\"UniqueIdentifier\" LIKE '" . Convert::raw2sql($uid) . "'");
+		$user = Member::get()->filter(array('UniqueIdentifier:PartialMatch' => Convert::raw2sql($uid)))->First();
 		if ($user) {
 			$user->login();
 		} else {
@@ -86,8 +86,8 @@ class ShibbolethAuthenticator extends Authenticator {
 	 * @return form returns the login form to use with this authentication method
 	 */
 	public static function get_login_form(Controller $controller) {
-		$fields = new FieldSet();
-		$actions = new FieldSet(
+		$fields = new FieldList();
+		$actions = new FieldList(
 			new FormAction('dologin', 'Log in')
 		);
 		$form = Object::create("ShibbolethLoginForm", $controller, "LoginForm", $fields, $actions);
@@ -107,7 +107,7 @@ class ShibbolethAuthenticator extends Authenticator {
 
 /**
  *	ShibbolethAuthenticator_Exception
- *	
+ *
  *	@package shibboleth
  */
 

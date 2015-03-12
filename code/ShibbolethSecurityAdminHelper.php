@@ -2,13 +2,13 @@
 
 /**
  *	ShibbolethSecurityAdminHelper
- *	
+ *
  *	Extends SilverStripe MemberAdmin for Shibboleth
- *	
+ *
  *	@package shibboleth
  **/
 
-class ShibbolethSecurityAdminHelper extends LeftAndMainDecorator {
+class ShibbolethSecurityAdminHelper extends LeftAndMainExtension {
 
 	public function init() {
 		Requirements::javascript('shibboleth/javascript/afterautocomplete.js');
@@ -26,7 +26,8 @@ class ShibbolethSecurityAdminHelper extends LeftAndMainDecorator {
 		// Autocomplete only on keys that actually exist, and don't autocomplete on password
 		if(!singleton($this->stat('subitem_class'))->hasDatabaseField($fieldName)  || $fieldName == 'Password') return;
 
-		$matches = DataObject::get($this->stat('subitem_class'),"\"$fieldName\" LIKE '" . Convert::raw2sql($fieldVal) . "%'");
+		$className = $this->stat('subitem_class');
+		$matches = $className::get()->filter(array("{$fieldName}:StartsWith" => Convert::raw2sql($fieldVal)));
 		if($matches) {
 			$result .= "<ul>";
 			foreach($matches as $match) {

@@ -3,10 +3,10 @@
 /**
  *	sspConfigLoader.php is supposed to hand environment specific configurations from the _ssp_environment.php file on
  *	to the relevant config files in the simplesaml code. In the _ssp_environment.php should contain the definition of
- *	of one variable only: $env which ist a nested array. 
+ *	of one variable only: $env which ist a nested array.
  *	the first level index is the relative path of the sumplesamlphp config file where the config var is being used.
  *	the second level index is the name of the variable to be set
- *	
+ *
  *	example for config/config.php $config['auth.adminpassword'] = 123
  *	$env['config/config.php']['config]['auth.adminpassword'] = 123;
  *
@@ -23,15 +23,15 @@ function _dbg($var) {
 }
 
 class SspConfigLoader {
-	
+
 	private static $env;
 	public static $env_path;
-	
+
 	private static function get_env() {
 		if ( empty( self::$env_path) ) {
 			self::$env_path = dirname($_SERVER['SCRIPT_FILENAME']); // start searching here and work up the directory tree
 		}
-		
+
 		while(empty(self::$env) && strlen(self::$env_path) > 2) {
 			$file = self::$env_path . '/_ssp_environment.php';
 			if(@file_exists($file)) {
@@ -45,9 +45,9 @@ class SspConfigLoader {
 				self::$env_path = dirname(self::$env_path);
 			}
 		}
-		
+
 		if(empty(self::$env)) trigger_error('_ssp_environment.php not found. Please set SspConfigLoader::$env_path to the location of the file.');
-		
+
 		return self::$env;
 	}
 
@@ -88,7 +88,7 @@ class SspConfigLoader {
 		$bt = debug_backtrace();
 		$error = $bt[0]['file'] == __FILE__ ? false : E_USER_ERROR;
 		while($bt[0]['file'] == __FILE__) array_shift($bt);
-	
+
 		// try to resolve the file name where get_env_conf() has been called
 		if(preg_match('"' . realpath(dirname(__FILE__) . '/../thirdparty/simplesaml/') . '(.+)"', realpath($bt[0]['file']), $matches)) {
 
@@ -109,10 +109,10 @@ class SspConfigLoader {
 
 			return $val;
 		}
-	
+
 		self::alert("Could not resolve path '{$bt[0]['file']}'", $error);
 	}
-	
+
 	// handle errors appropriately
 	private static function alert($msg, $code) {
 		if($code === false) {
