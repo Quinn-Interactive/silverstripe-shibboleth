@@ -1,8 +1,7 @@
 ---
-Name: mysite
+Name: shibboleth
 After:
-  - 'framework/*'
-  - 'cms/*'
+  - 'mysite'
 ---
 # YAML configuration for SilverStripe
 # See http://doc.silverstripe.org/framework/en/topics/configuration
@@ -15,4 +14,3 @@ SecurityAdmin:
     - ShibbolethSecurityAdminHelper
 Member:
   unique_identifier_field: UniqueIdentifier
-
